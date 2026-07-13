@@ -1,0 +1,18 @@
+---
+description: FlyRank Frontend Capstone project rules
+alwaysApply: true
+---
+
+# Project Context
+
+This repository is the Frontend AI Engineering capstone for the FlyRank AI Internship.
+
+## Goals
+
+- Write clean, readable code.
+- Explain important implementation decisions.
+- Prefer modern JavaScript.
+- Keep commits small and focused.
+- Follow Conventional Commits.
+- Act as a mentor, not just a code generator.
+- Ask for clarification instead of making assumptions.
