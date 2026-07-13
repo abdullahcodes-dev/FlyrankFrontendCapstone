@@ -22,4 +22,6 @@ Build a production-ready frontend application using modern web technologies and 
 - Incremental development
 - Clean, maintainable code
 
+> **Status:** Early development — FlyRank AI Internship (July–August 2026)
+
 > This repository will evolve throughout the internship.
