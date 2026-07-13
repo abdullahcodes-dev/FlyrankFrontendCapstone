@@ -8,10 +8,18 @@ Build a production-ready frontend application using modern web technologies and 
 
 ## Tech Stack
 
-- HTML
-- CSS
-- JavaScript
+- HTML5
+- CSS3
+- JavaScript (ES6+)
+- Node.js
 - Git & GitHub
 - Cursor AI
+
+## Development Principles
+
+- AI-assisted development
+- Conventional Commits
+- Incremental development
+- Clean, maintainable code
 
 > This repository will evolve throughout the internship.
