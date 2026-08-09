@@ -1,6 +1,17 @@
 import type { Metadata } from "next";
+import { Inter, Space_Grotesk } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "CommuniNest",
@@ -15,7 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-white text-slate-900 antialiased">
+      <body
+        className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}
+      >
         <header className="border-b border-slate-200 bg-white">
           <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
             <Link
@@ -26,7 +39,10 @@ export default function RootLayout({
             </Link>
 
             <div className="flex items-center gap-6 text-sm font-medium text-slate-600">
-              <Link href="/" className="transition-colors hover:text-green-700">
+              <Link
+                href="/"
+                className="transition-colors hover:text-green-700"
+              >
                 Home
               </Link>
 
