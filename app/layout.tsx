@@ -26,23 +26,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}
-      >
+      <body className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}>
         <header className="border-b border-slate-200 bg-white">
-          <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
             <Link
               href="/"
-              className="text-xl font-bold tracking-tight text-green-700"
+              className="shrink-0 text-xl font-bold text-slate-900"
             >
               CommuniNest
             </Link>
 
-            <div className="flex items-center gap-6 text-sm font-medium text-slate-600">
-              <Link
-                href="/"
-                className="transition-colors hover:text-green-700"
-              >
+            <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-sm font-medium text-slate-600 sm:gap-x-6">
+              <Link href="/" className="transition-colors hover:text-green-700">
                 Home
               </Link>
 
