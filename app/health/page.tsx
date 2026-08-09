@@ -1,6 +1,9 @@
 export default async function HealthPage() {
   try {
-    const response = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+    const response = await fetch(
+      process.env.HEALTH_CHECK_URL ||
+        "https://jsonplaceholder.typicode.com/todos/1"
+    );
 
     if (!response.ok) {
       throw new Error("Failed to fetch health-check data");
