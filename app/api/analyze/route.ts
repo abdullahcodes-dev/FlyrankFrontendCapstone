@@ -9,9 +9,9 @@ export async function POST(request: Request) {
   try {
     const { issue } = await request.json();
 
-    if (!issue || typeof issue !== "string" || issue.trim().length < 5) {
+    if (!issue || typeof issue !== "string" || issue.trim().length < 20) {
       return NextResponse.json(
-        { error: "Please describe the issue in more detail." },
+        { error: "Please describe the issue in a little bit more detail." },
         { status: 400 }
       );
     }
