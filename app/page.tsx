@@ -36,45 +36,6 @@ const quickActions = [
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      {/* Navigation */}
-      <header className="border-b border-slate-200 bg-white">
-        <nav
-          aria-label="Main navigation"
-          className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8"
-        >
-          <Link href="/" className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-700 text-sm font-bold text-white">
-              C
-            </span>
-            <span className="text-lg font-bold tracking-tight">
-              CommuniNest
-            </span>
-          </Link>
-
-          <div className="hidden items-center gap-7 text-sm font-medium text-slate-600 sm:flex">
-            <Link href="/" className="text-green-700">
-              Home
-            </Link>
-            <Link href="/report" className="hover:text-green-700">
-              Report an issue
-            </Link>
-            <Link href="/events" className="hover:text-green-700">
-              Events
-            </Link>
-            <Link href="/volunteers" className="hover:text-green-700">
-              Volunteers
-            </Link>
-          </div>
-
-          <Link
-            href="/report"
-            className="rounded-lg bg-green-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-800"
-          >
-            Report issue
-          </Link>
-        </nav>
-      </header>
-
       {/* Hero */}
       <section className="border-b border-slate-200 bg-gradient-to-b from-green-50 via-white to-white">
         <div className="mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:px-8">
@@ -198,9 +159,11 @@ export default function HomePage() {
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-700 text-sm font-bold text-white">
                 1
               </div>
+
               <h3 className="mt-5 text-lg font-semibold">
                 Tell us what is happening
               </h3>
+
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 Describe a local issue in your own words. No complicated forms
                 or technical knowledge required.
@@ -211,9 +174,11 @@ export default function HomePage() {
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-700 text-sm font-bold text-white">
                 2
               </div>
+
               <h3 className="mt-5 text-lg font-semibold">
                 Understand the issue
               </h3>
+
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 CommuniNest uses AI to categorize the issue, estimate urgency,
                 and suggest practical next steps.
@@ -224,9 +189,11 @@ export default function HomePage() {
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-700 text-sm font-bold text-white">
                 3
               </div>
+
               <h3 className="mt-5 text-lg font-semibold">
                 Take meaningful action
               </h3>
+
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 Use the guidance to decide what to do next and get involved in
                 improving your community.
@@ -309,9 +276,11 @@ export default function HomePage() {
             <Link href="/report" className="hover:text-green-700">
               Report
             </Link>
+
             <Link href="/events" className="hover:text-green-700">
               Events
             </Link>
+
             <Link href="/volunteers" className="hover:text-green-700">
               Volunteers
             </Link>

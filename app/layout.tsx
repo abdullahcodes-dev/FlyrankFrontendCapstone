@@ -26,49 +26,48 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}>
+      <body
+        className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}
+      >
         <header className="border-b border-slate-200 bg-white">
-          <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-            <Link
-              href="/"
-              className="shrink-0 text-xl font-bold text-slate-900"
-            >
-              CommuniNest
+          <nav
+            aria-label="Main navigation"
+            className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8"
+          >
+            <Link href="/" className="flex items-center gap-2">
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-700 text-sm font-bold text-white">
+                C
+              </span>
+
+              <span className="text-lg font-bold tracking-tight text-slate-900">
+                CommuniNest
+              </span>
             </Link>
 
-            <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-sm font-medium text-slate-600 sm:gap-x-6">
-              <Link href="/" className="transition-colors hover:text-green-700">
+            <div className="hidden items-center gap-7 text-sm font-medium text-slate-600 sm:flex">
+              <Link href="/" className="hover:text-green-700">
                 Home
               </Link>
 
-              <Link
-                href="/features"
-                className="transition-colors hover:text-green-700"
-              >
-                Features
+              <Link href="/report" className="hover:text-green-700">
+                Report an issue
               </Link>
 
-              <Link
-                href="/volunteers"
-                className="transition-colors hover:text-green-700"
-              >
-                Volunteers
-              </Link>
-
-              <Link
-                href="/events"
-                className="transition-colors hover:text-green-700"
-              >
+              <Link href="/events" className="hover:text-green-700">
                 Events
               </Link>
 
-              <Link
-                href="/about"
-                className="transition-colors hover:text-green-700"
-              >
-                About
+              <Link href="/volunteers" className="hover:text-green-700">
+                Volunteers
               </Link>
             </div>
+
+            <Link
+              href="/report"
+              className="rounded-lg bg-green-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-800"
+            >
+              Report issue
+            </Link>
           </nav>
         </header>
 
