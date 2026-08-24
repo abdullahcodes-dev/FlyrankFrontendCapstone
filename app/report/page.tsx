@@ -31,10 +31,24 @@ export default function ReportPage() {
         body: JSON.stringify({ issue }),
       });
 
+      const contentType = response.headers.get("content-type") || "";
+
+      if (!contentType.includes("application/json")) {
+        throw new Error(
+          "The analysis service returned an unexpected response. Please try again."
+        );
+      }
+
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.error || "Something went wrong.");
+      }
+
+      if (!data.analysis || typeof data.analysis !== "object") {
+        throw new Error(
+          "The analysis service returned an unexpected result. Please try again."
+        );
       }
 
       setAnalysis(data.analysis);
