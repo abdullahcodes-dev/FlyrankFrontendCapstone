@@ -1,16 +1,51 @@
 # CommuniNest — FlyRank Frontend AI Capstone
 
-CommuniNest is a community-focused AI web application that helps people report and understand local community issues. Users can describe a problem in their neighborhood, and CommuniNest uses an AI-powered analysis flow to identify the likely issue type, assess its urgency, explain what may be happening, and suggest practical next steps. The project was built as the final capstone for the FlyRank AI Engineering Frontend track, with a focus on accessibility, resilience, testing, performance, and production deployment.
+CommuniNest is a community-focused AI web application that helps people report and understand local community issues.
 
-## Live Application
+A user can describe a problem in their neighborhood, and CommuniNest uses an AI-powered analysis flow to identify the likely issue type, assess its urgency, explain what may be happening, and suggest practical next steps.
 
-**Production:** `https://communinest-flyrank-capstone.netlify.app/`
+The project was built as the final capstone for the **FlyRank AI Engineering Frontend track**, with a focus on building a complete, accessible, tested, resilient, and publicly deployed frontend application.
 
-The application is deployed on Netlify and connected to the GitHub repository for continuous production deployments from the `main` branch.
+## Live Demo
 
-## Repository
+**Production:** https://communinest-flyrank-capstone.netlify.app/
 
-**GitHub:** `https://github.com/abdullahcodes-dev/FlyrankFrontendCapstone`
+**Repository:** https://github.com/abdullahcodes-dev/FlyrankFrontendCapstone
+
+The application is deployed on Netlify and connected to the GitHub repository. Pushes to the `main` branch trigger production deployments.
+
+## Screenshots
+
+### Homepage
+
+![CommuniNest homepage](screenshots/01-homepage.PNG)
+
+### Issue Reporting
+
+![CommuniNest issue reporting page](screenshots/02-report-page.PNG)
+
+### AI-Powered Analysis
+
+![CommuniNest AI analysis](screenshots/03-AI-analysis.PNG)
+
+### Lighthouse Quality Audit
+
+![CommuniNest Lighthouse scores](screenshots/04-lighthouse-scores.PNG)
+
+Latest desktop Lighthouse run:
+
+| Category       |   Score |
+| -------------- | ------: |
+| Performance    |  **92** |
+| Accessibility  | **100** |
+| Best Practices |  **96** |
+| SEO            | **100** |
+
+### Accessibility Audit
+
+![CommuniNest axe accessibility results](screenshots/05-axe-accessibility.PNG)
+
+The final axe DevTools automated scan reported **0 automatic accessibility issues**, including zero critical, serious, moderate, and minor issues.
 
 ## What CommuniNest Does
 
@@ -18,106 +53,121 @@ CommuniNest is designed around a simple community problem: people often notice l
 
 The application provides:
 
-* A community-focused homepage and navigation experience
-* Information about CommuniNest and its purpose
-* Community features and initiatives
-* Volunteer and community event sections
-* An issue-reporting workflow
-* AI-powered analysis of reported issues
-* Structured guidance based on the submitted issue
-* Clear loading, success, and error states
-* Responsive layouts for mobile and desktop users
+- A community-focused homepage
+- Information about CommuniNest and its purpose
+- Community features and initiatives
+- Volunteer and community event sections
+- An issue-reporting workflow
+- AI-powered analysis of reported issues
+- Structured guidance based on the submitted issue
+- Loading, success, and error states
+- Responsive layouts for desktop and mobile users
+- Accessible navigation and form interactions
 
-## AI-Powered Issue Analysis
+## Key Feature: AI Issue Analysis
 
-The main AI capability is integrated into the **Report an Issue** workflow.
+The primary AI capability is integrated directly into the **Report an Issue** workflow rather than being presented as a standalone chatbot.
 
-A user describes a community problem, and the frontend sends the report to the application's server-side API endpoint:
+A user describes a community problem and submits it for analysis.
+
+The frontend sends the request to:
 
 `POST /api/analyze`
 
-The server-side route validates the request and uses the Google Gemini API to analyze the reported issue.
+The server-side route validates the submitted issue before sending it to the Google Gemini API.
 
-The AI response is structured into four useful categories:
+The AI response is constrained to a predictable structure containing:
 
-* **Issue Type** — identifies the likely category of the reported problem
-* **Urgency** — estimates how urgently the issue should be addressed
-* **What May Be Happening** — provides a plain-language explanation
-* **Recommended Next Steps** — suggests practical actions the user can take
+1. **Issue Type** — a general category for the reported problem
+2. **Urgency** — `Low`, `Medium`, or `High`
+3. **What May Be Happening** — 2–4 plausible explanations
+4. **Recommended Next Steps** — 2–4 practical actions
 
-This makes the AI capability part of the actual product workflow rather than a standalone chatbot or text-generation demo.
+The API also validates the returned structure before sending it back to the frontend. Invalid or empty AI responses are treated as failures rather than being displayed as if they were valid analysis.
 
 ## Architecture Overview
 
-CommuniNest uses the Next.js App Router architecture.
+CommuniNest uses the **Next.js App Router** architecture.
 
-### Frontend
+```text
+app/
+├── api/
+│   └── analyze/
+│       └── route.ts
+├── components/
+│   └── Navbar.tsx
+├── about/
+│   └── page.tsx
+├── events/
+│   └── page.tsx
+├── features/
+│   └── page.tsx
+├── health/
+│   └── page.tsx
+├── report/
+│   └── page.tsx
+├── volunteers/
+│   └── page.tsx
+├── globals.css
+├── layout.tsx
+└── page.tsx
+```
 
-The application UI is built with:
-
-* Next.js
-* React
-* TypeScript
-* Tailwind CSS
-* Custom global styling
-* Responsive components
-
-The `/app` directory contains the application's routes and UI logic. Next.js uses file-system routing, with route segments represented by folders containing `page.tsx` files.
-
-### Shared Layout
+### Root Layout
 
 `app/layout.tsx`
 
-The root layout provides shared application configuration, including:
+Provides the shared application shell, including:
 
-* Global fonts
-* Global CSS
-* Metadata
-* Shared navigation
+- Global fonts
+- Global CSS
+- Metadata
+- Shared navigation
+- Root HTML/body structure
 
 ### Navigation
 
 `app/components/Navbar.tsx`
 
-The navigation component provides:
+Provides:
 
-* Desktop navigation
-* Responsive mobile navigation
-* Accessible menu controls
-* Links to the main application sections
+- Desktop navigation
+- Responsive mobile navigation
+- Accessible menu controls
+- Navigation links to the main application sections
+
+### Report Workflow
+
+`app/report/page.tsx`
+
+Contains the primary user-facing AI workflow:
+
+- Issue input
+- Minimum character validation
+- Character counter
+- Analyze action
+- Loading state
+- Successful analysis display
+- Error handling
 
 ### AI API Route
 
 `app/api/analyze/route.ts`
 
-This server-side route handles AI analysis requests.
+The server-side route:
 
-The route:
+1. Parses the incoming request
+2. Validates the request structure
+3. Trims the submitted issue
+4. Enforces a minimum length of 20 characters
+5. Enforces a maximum length of 2,000 characters
+6. Sends the issue to Google Gemini
+7. Requests structured JSON output
+8. Validates the returned analysis
+9. Returns the structured result to the frontend
+10. Returns a safe error response when analysis fails
 
-1. Receives the submitted issue
-2. Validates the input
-3. Sends the issue to the configured AI model
-4. Requests structured analysis
-5. Returns the structured result to the frontend
-6. Returns an appropriate error response when the analysis fails
-
-Keeping the AI request on the server prevents the API credential from being exposed to the browser.
-
-### Report Page
-
-`app/report/page.tsx`
-
-The report page provides the main user-facing AI workflow.
-
-It handles:
-
-* User input
-* Minimum input validation
-* Loading state
-* API requests
-* Successful AI results
-* Error states
-* Structured presentation of the AI response
+The Gemini API request is kept server-side so the API credential is not exposed to the browser.
 
 ## Application Routes
 
@@ -134,137 +184,54 @@ It handles:
 
 ## Tech Stack
 
-* **Next.js 16**
-* **React**
-* **TypeScript**
-* **Tailwind CSS**
-* **Google Gemini API**
-* **Vitest**
-* **Testing Library**
-* **Netlify**
-* **GitHub**
+- **Next.js 16**
+- **React 19**
+- **TypeScript**
+- **Tailwind CSS 4**
+- **Google Gemini API**
+- **Vitest**
+- **Testing Library**
+- **ESLint**
+- **Netlify**
+- **GitHub**
 
-## Accessibility
+## Environment Variables
 
-Accessibility was treated as part of the implementation rather than as a final cosmetic check.
+Create a `.env.local` file in the project root for local development.
 
-The application was tested using axe DevTools against WCAG 2.1 AA rules.
+| Variable           | Required | Purpose                                                |
+| ------------------ | -------- | ------------------------------------------------------ |
+| `GEMINI_API_KEY`   | Yes      | Server-side Google Gemini API authentication           |
+| `HEALTH_CHECK_URL` | Yes      | URL used by the application health-check configuration |
 
-Initial automated testing identified four serious color-contrast issues. These were addressed by updating the affected text and UI colors.
+Example:
 
-A subsequent axe DevTools scan reported:
-
-* **Automatic issues: 0**
-* **Critical: 0**
-* **Serious: 0**
-* **Moderate: 0**
-* **Minor: 0**
-
-Additional accessibility considerations include:
-
-* Semantic HTML elements
-* Accessible navigation landmarks
-* Accessible mobile menu controls
-* Descriptive ARIA labels where required
-* Keyboard-visible focus states
-* Responsive layouts
-* Sufficient color contrast
-* Form validation and user feedback
-
-## Testing
-
-The project uses Vitest and Testing Library.
-
-The current test suite covers the critical issue-reporting workflow.
-
-### Tests
-
-The report page currently has three passing tests:
-
-1. The Analyze button remains disabled until the issue reaches the required minimum length.
-2. A successful AI request displays the returned analysis.
-3. A failed AI request displays an appropriate error message.
-
-### Latest Test Result
-
-```text
-Test Files  1 passed (1)
-Tests       3 passed (3)
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+HEALTH_CHECK_URL=https://jsonplaceholder.typicode.com/todos/1
 ```
 
-### Coverage
+**Never commit `.env.local` or real API credentials to the repository.**
 
-The latest coverage report:
-
-```text
-Statements: 81.25%
-Branches:   85.00%
-Functions:  83.33%
-Lines:      83.87%
-```
-
-The capstone requires at least 50% component coverage, and the current tested report workflow is comfortably above that threshold.
-
-Run the tests with:
-
-```bash
-npm test -- --run
-```
-
-Generate the coverage report with:
-
-```bash
-npm test -- --run --coverage
-```
-
-## Performance Audit
-
-The application was tested using Lighthouse in a mobile-style environment.
-
-Latest Lighthouse results:
-
-| Category       |   Score |
-| -------------- | ------: |
-| Performance    |  **87** |
-| Accessibility  |  **95** |
-| Best Practices | **100** |
-| SEO            | **100** |
-
-The capstone target requires a Lighthouse score of at least 85, so the current Performance score meets the requirement.
-
-The project also received performance-related diagnostics from Lighthouse. These included JavaScript execution and main-thread work. These diagnostics were reviewed, but no unnecessary optimization work was introduced at the expense of shipping the completed product.
-
-The most important production requirement at this stage is that the application remains functional, accessible, tested, and deployed.
-
-## Production Build
-
-The production build has been verified successfully using:
-
-```bash
-npm run build
-```
-
-The build completes successfully and generates all expected application routes.
-
-The application can also be tested locally using the production server:
-
-```bash
-npm start
-```
+The repository includes `.env.example` to document the environment configuration without exposing secret values.
 
 ## Getting Started
 
 ### Prerequisites
 
-* Node.js
-* npm
-* A configured AI API key for local AI functionality
+- Node.js
+- npm
+- A Google Gemini API key for the AI analysis functionality
 
 ### Install dependencies
 
 ```bash
 npm install
 ```
+
+### Configure environment variables
+
+Create `.env.local` and add the required variables described above.
 
 ### Start the development server
 
@@ -278,137 +245,275 @@ Open:
 http://localhost:3000
 ```
 
-### Run tests
-
-```bash
-npm test -- --run
-```
-
-### Run tests with coverage
-
-```bash
-npm test -- --run --coverage
-```
-
 ### Run the production build
 
 ```bash
 npm run build
 ```
 
-### Start the production server
+### Start the production server locally
 
 ```bash
 npm start
 ```
 
-## Environment Variables
+## Testing
 
-Secrets are kept outside the repository.
+The project uses **Vitest** and **Testing Library** for automated testing.
 
-The project uses an environment file for local configuration, while `.env.example` documents the required environment-variable structure without exposing secret values.
+The current test suite focuses on the critical report-page workflow.
 
-Never commit API keys or other credentials to the repository.
+### Current Tests
 
-## Resilience & Error Handling
+The report page has three passing tests covering:
 
-The AI workflow is designed to fail safely rather than leaving the user with an unexplained broken interface.
+1. The Analyze button remains disabled until the issue reaches the required minimum length.
+2. A successful AI request displays the returned analysis.
+3. A failed AI request displays an appropriate error message.
 
-The report workflow handles:
+Run the tests with:
 
-* Empty or insufficient input
-* Requests that fail at the API layer
-* AI request failures
-* Loading states while analysis is running
-* Successful structured responses
-* User-facing error messages
+```bash
+npm test -- --run
+```
 
-The AI analysis endpoint also validates incoming requests before attempting the AI operation.
+### Coverage
 
-If the AI service is unavailable, the user receives an error state instead of a misleading or incomplete analysis.
+The latest coverage run reported:
+
+| Metric     |   Coverage |
+| ---------- | ---------: |
+| Statements | **81.25%** |
+| Branches   | **85.00%** |
+| Functions  | **83.33%** |
+| Lines      | **83.87%** |
+
+Run coverage with:
+
+```bash
+npm test -- --run --coverage
+```
+
+## Accessibility
+
+Accessibility was treated as part of the implementation rather than only as a final audit.
+
+The application was tested using **axe DevTools** against WCAG 2.1 AA rules.
+
+The initial automated scan identified four serious color-contrast issues. The affected colors were adjusted, after which a subsequent full-page scan reported:
+
+- Automatic issues: **0**
+- Critical: **0**
+- Serious: **0**
+- Moderate: **0**
+- Minor: **0**
+
+Additional accessibility considerations include:
+
+- Semantic HTML
+- Navigation landmarks
+- Accessible mobile menu controls
+- Descriptive ARIA labels where appropriate
+- Visible keyboard focus states
+- Form validation feedback
+- Responsive layouts
+- WCAG-compliant color contrast
+
+## Performance
+
+The production application was audited using Lighthouse.
+
+Latest desktop results:
+
+| Category       |   Score |
+| -------------- | ------: |
+| Performance    |  **92** |
+| Accessibility  | **100** |
+| Best Practices |  **96** |
+| SEO            | **100** |
+
+The Lighthouse run also surfaced browser-environment-related performance diagnostics. These were reviewed separately from the overall quality scores.
+
+The project prioritizes shipping a functional, accessible, tested production application while avoiding unnecessary optimization work that would add complexity without meaningful user benefit.
+
+## Production Hygiene & Resilience
+
+The AI endpoint includes basic protection against oversized or trivial requests.
+
+The report input is constrained to:
+
+- **Minimum:** 20 characters
+- **Maximum:** 2,000 characters
+
+The same validation is enforced server-side in `/api/analyze`, so the protection does not rely only on frontend UI behavior.
+
+The endpoint also validates:
+
+- Request JSON structure
+- Issue type
+- Urgency values
+- Number and type of generated explanations
+- Number and type of recommended next steps
+
+This prevents malformed AI output from being treated as a valid application response.
+
+The application also handles:
+
+- Invalid request bodies
+- Insufficient input
+- Oversized input
+- Empty AI responses
+- Invalid AI JSON
+- Invalid AI response structures
+- AI service failures
+
+Users receive a safe, user-facing error message when the AI service cannot complete the request.
+
+## Technical Decisions
+
+### Server-side AI integration
+
+The Gemini request is performed from the Next.js server-side route instead of directly from the browser.
+
+This keeps the API key away from client-side JavaScript and gives the application a single place to validate requests and AI responses.
+
+### Structured AI output
+
+The AI request uses a JSON response schema instead of relying on free-form text.
+
+This makes the response predictable for the React UI and allows the server to validate the generated structure before returning it.
+
+### Input limits
+
+The report workflow uses both frontend and server-side input limits.
+
+The frontend provides immediate feedback to the user, while the server independently enforces the same constraints.
+
+### Explicit error states
+
+AI-dependent interfaces can fail for reasons outside the application's control. Instead of leaving the user with a broken or ambiguous state, the report workflow provides explicit loading and error handling.
+
+### Keep the scope focused
+
+CommuniNest is intentionally scoped as a capstone application rather than a full civic platform.
+
+The goal was to demonstrate a complete frontend product workflow with meaningful AI integration, rather than introduce authentication, databases, municipal integrations, or other infrastructure that was not necessary for the core experience.
 
 ## Deployment
 
-CommuniNest is deployed to Netlify.
+CommuniNest is deployed to **Netlify** and connected to the GitHub repository.
 
-The project is connected to the GitHub repository, with the `main` branch used for production deployments.
+The `main` branch is used for production deployments.
 
-The production deployment has been verified after the latest changes, including:
+The latest production deployment was verified after the final accessibility, testing, and documentation work.
 
-* Accessibility improvements
-* Test coverage additions
-* Performance improvements
-* AI workflow updates
+The production environment contains the required AI API configuration without exposing credentials in the repository.
 
-Production deployment history is retained in Netlify, allowing a previous successful deployment to be restored if a future release introduces a regression.
+Netlify's current Next.js runtime supports the Next.js App Router and Route Handlers used by this project.
 
-### Rollback Plan
+## Production Verification
 
-If a production deployment introduces a critical regression:
+The final production version was verified for:
 
-1. Identify the last known-good production deployment in Netlify.
-2. Restore that deployment as the active production version.
-3. Investigate and fix the issue locally.
-4. Run tests and a production build.
-5. Push the corrected changes to `main`.
-6. Verify the new production deployment.
-
-For this project, rollback is intentionally simple: restore a known-good deployment rather than attempting an emergency production fix directly.
+- Homepage loading
+- Navigation
+- About page
+- Features page
+- Events page
+- Volunteers page
+- Report workflow
+- AI analysis
+- Input validation
+- AI error handling
+- Responsive behavior
+- Accessibility
+- Production build
+- Automated tests
+- Lighthouse quality
 
 ## Known Limitations
 
-CommuniNest is intentionally scoped as a small capstone application rather than a full production community platform.
+CommuniNest is intentionally scoped as a small capstone application.
 
 Current limitations include:
 
-* No user authentication system
-* No persistent database for submitted reports
-* Reports are analyzed but are not currently submitted to a municipal authority
-* AI-generated guidance should be treated as informational rather than official civic advice
-* The application does not independently verify the real-world condition described by a user
-* Community events and volunteer content are currently application-level content rather than a full user-generated platform
-* The AI workflow depends on availability of the configured external AI service
+- No user authentication
+- No persistent database for submitted reports
+- Reports are analyzed but are not submitted directly to municipal authorities
+- AI-generated guidance should be treated as informational rather than official civic advice
+- The application does not independently verify the real-world condition described by a user
+- Community events and volunteer content are currently application-level content rather than a complete user-generated platform
+- The AI workflow depends on availability of the configured external AI service
+- Automated testing currently focuses primarily on the core report workflow rather than the entire application
 
-These limitations are deliberate scope decisions for the capstone rather than unfinished core functionality.
+These are deliberate scope decisions for the capstone.
 
 ## Future Improvements
 
 Potential future development could include:
 
-* User accounts and authentication
-* Persistent issue reporting
-* Issue status tracking
-* Location-based issue reporting
-* Image uploads for reported problems
-* Community voting and verification
-* Municipal or organization integrations
-* Notifications for issue updates
-* A moderation workflow
-* AI-assisted duplicate issue detection
-* More extensive automated end-to-end testing
-* Expanded performance optimization as the application grows
+- User accounts and authentication
+- Persistent issue reporting
+- Issue status tracking
+- Location-based issue reporting
+- Image uploads for reported problems
+- Community voting and verification
+- Municipal or organization integrations
+- Notifications for issue updates
+- Moderation workflows
+- AI-assisted duplicate issue detection
+- Expanded end-to-end testing
+- Further performance optimization as the application grows
 
-## Production Checklist Summary
+## How AI Tools Were Used
 
-Before considering the capstone complete, the following areas were verified:
+AI tools were used throughout development as **development assistants**, not as a replacement for testing or engineering judgment.
 
-* [x] Application is deployed
-* [x] Main user flows are functional
-* [x] AI capability is meaningfully integrated
-* [x] AI error handling is implemented
-* [x] Tests exist and pass
-* [x] Test coverage exceeds 50%
-* [x] Production build succeeds
-* [x] Lighthouse Performance score is at least 85
-* [x] Accessibility audit completed
-* [x] axe DevTools reports zero automatic accessibility issues
-* [x] Environment secrets are kept outside the repository
-* [x] Deployment and rollback approach is documented
-* [x] Known limitations are documented
+AI assistance was used for tasks including:
+
+- Exploring implementation approaches
+- Generating and refining React/Next.js components
+- Debugging TypeScript and JSX issues
+- Improving responsive navigation behavior
+- Reviewing accessibility problems
+- Interpreting Lighthouse and axe DevTools findings
+- Improving the AI API's validation and error handling
+- Designing and refining automated tests
+- Reviewing test coverage
+- Structuring documentation and README content
+
+The development process still required manual integration and verification. Generated code was reviewed, adapted to the existing project, tested locally, checked with browser tools, and verified again on the production deployment.
+
+For the AI-powered product feature itself, Google Gemini is the external AI service used by the application. The model is instructed to return structured issue analysis rather than unrestricted conversational output.
+
+## Production Checklist
+
+- [x] Public production deployment
+- [x] Main user flows verified
+- [x] AI capability integrated into the product workflow
+- [x] AI API key kept server-side
+- [x] Server-side input validation
+- [x] 20–2,000 character input cap
+- [x] AI response validation
+- [x] AI error handling
+- [x] Automated tests passing
+- [x] Test coverage above 50%
+- [x] Production build succeeds
+- [x] Lighthouse audit completed
+- [x] Accessibility audit completed
+- [x] axe DevTools reports zero automatic issues
+- [x] Environment configuration documented
+- [x] Production deployment verified
+- [x] README documents architecture and technical decisions
+- [x] AI-assisted development process documented
 
 ## Capstone Reflection
 
-A separate reflection documents the main challenges encountered during development, the decisions that required the most thought, what could be improved in a future iteration, and the most important lessons learned while taking CommuniNest from an initial scaffold to a tested and deployed AI application.
+CommuniNest evolved from an initial application scaffold into a publicly deployed AI-powered community application.
+
+The final implementation focuses on the complete user journey: describing a community issue, validating the input, analyzing it through an AI-backed server route, presenting structured guidance, handling failures gracefully, and delivering the experience through a production deployment.
+
+The project also provided practical experience with accessibility auditing, automated testing, performance analysis, server-side AI integration, environment management, Git-based deployment, and production-oriented documentation.
 
 ---
 
